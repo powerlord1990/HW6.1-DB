@@ -48,7 +48,7 @@ CREATE TABLE orders
     number       INTEGER NOT NULL CHECK ( number > 0 ),
     price        INTEGER REFERENCES products (price),
     total        INTEGER CHECK ( total > 0 ),
-    order_status TEXT    NOT NULL DEFAULT 'PURCHASED'
+    orderStatus TEXT    NOT NULL DEFAULT 'PURCHASED'  -- can accept CANCEL and PURCHASED
 );
 
 INSERT INTO orders(userId, productId, number, price, total,order_status)
