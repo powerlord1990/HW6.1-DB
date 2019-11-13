@@ -44,21 +44,30 @@ CREATE TABLE orders
 (
     id           INTEGER PRIMARY KEY AUTOINCREMENT,
     userId       TEXT REFERENCES users (id),
-    productId    INTEGER REFERENCES products (id),
-    number       INTEGER NOT NULL CHECK ( number > 0 ),
-    price        INTEGER REFERENCES products (price),
     total        INTEGER CHECK ( total > 0 ),
-    orderStatus TEXT    NOT NULL DEFAULT 'PURCHASED'  -- can accept CANCEL and PURCHASED
+    order_status TEXT NOT NULL DEFAULT 'PURCHASED' -- Can accept CANCEL and PURCHASED
 );
 
-INSERT INTO orders(userId, productId, number, price, total,order_status)
-VALUES (2, 5, 1, 5000, 5000,'PURCHASED'),
-       (1, 2, 5, 2000, 10000,'CANCEL'),
-       (3, 1, 3, 1000, 3000,'PURCHASED'),
-       (1, 3, 2, 3000, 6000,'PURCHASED'),
-       (1, 4, 1, 4000, 4000,'CANCEL');
+INSERT INTO orders(userId, total, order_status)
+VALUES (2, 5000, 'PURCHASED'),
+       (1, 10000, 'CANCEL'),
+       (3, 3000, 'PURCHASED'),
+       (1, 6000, 'PURCHASED'),
+       (1, 4000, 'CANCEL');
 
+CREATE TABLE sales
+(
+    orders_id INTEGER REFERENCES orders (id),
+    productId INTEGER REFERENCES products (id),
+    number    INTEGER NOT NULL CHECK ( number > 0 )
+);
+
+INSERT INTO sales(orders_id, productId, number)
+VALUES (1, 1, 1),
+       (1, 3, 2),
+       (1, 5, 3);
 
 DROP TABLE products;
 DROP TABLE users;
 DROP TABLE orders;
+DROP TABLE sales;
